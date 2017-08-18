@@ -1,9 +1,10 @@
+require 'csv'
 class QLearningPlayer
   attr_accessor :x, :game
 
   def initialize
     @x = 0
-    @actions = [:left, :right]
+    @actions = [:left, :right, :down, :up]
     @first_run = true
 
     @learning_rate = 0.2
@@ -72,6 +73,18 @@ class QLearningPlayer
     @q_table.length.times do |i|
       puts @q_table[i].to_s
     end
+  end
+
+  def load_qtable
+    @q_table = CSV.read(qtable_file).map{|l|l.map(&:to_f)} if File.exists?(qtable_file)
+  end
+
+  def qtable_file
+    "q_table_#{@game.params_description.tr(' ','_')}.csv"
+  end
+
+  def save_qtable
+    CSV.open(qtable_file,"w+"){|f|@q_table.each{|l| f << l}}
   end
 
 end

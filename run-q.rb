@@ -5,10 +5,14 @@ p = QLearningPlayer.new
 g = Game.new( p )
 p.game = g
 
-10.times do
+1000.times do
+  p.load_qtable
   g.run
+  p.save_qtable
   g.reset
 end
 
-#p.print_table
+p.print_table
+
+
 puts ""
